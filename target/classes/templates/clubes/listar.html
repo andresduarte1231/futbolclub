@@ -18,7 +18,6 @@
       flex-direction: column;
     }
 
-    /* Patrón de césped */
     .grass-pattern {
       background-image: 
         repeating-linear-gradient(
@@ -30,7 +29,7 @@
         );
     }
 
-    /* ========== NAVBAR ========== */
+    /* NAVBAR */
     .navbar-futbol {
       background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%) !important;
       box-shadow: 0 4px 15px rgba(0,0,0,0.2);
@@ -80,7 +79,7 @@
       font-size: 1.1rem;
     }
 
-    /* ========== HEADER DE PÁGINA ========== */
+    /* HEADER */
     .page-header {
       background: white;
       border-radius: 15px;
@@ -108,7 +107,94 @@
       font-size: 2rem;
     }
 
-    /* ========== TABLA MEJORADA ========== */
+    /* BOTONES */
+    .btn-new {
+      background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%);
+      border: none;
+      color: white;
+      padding: 0.7rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-new:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(45, 134, 89, 0.4);
+      color: white;
+    }
+
+    .btn-action {
+      padding: 0.4rem 0.8rem;
+      border-radius: 6px;
+      border: none;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      text-decoration: none;
+      margin: 0 0.2rem;
+    }
+
+    .btn-edit {
+      background: #0d6efd;
+      color: white;
+    }
+
+    .btn-edit:hover {
+      background: #0b5ed7;
+      transform: translateY(-2px);
+      color: white;
+    }
+
+    .btn-players {
+      background: #6c757d;
+      color: white;
+    }
+
+    .btn-players:hover {
+      background: #5a6268;
+      transform: translateY(-2px);
+      color: white;
+    }
+
+    .btn-delete {
+      background: #dc3545;
+      color: white;
+    }
+
+    .btn-delete:hover {
+      background: #c82333;
+      transform: translateY(-2px);
+      color: white;
+    }
+
+    .btn-back {
+      background: white;
+      border: 2px solid #2d8659;
+      color: #2d8659;
+      padding: 0.6rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-back:hover {
+      background: #2d8659;
+      color: white;
+      transform: translateX(-5px);
+    }
+
+    /* TABLA */
     .table-container {
       background: white;
       border-radius: 15px;
@@ -166,7 +252,6 @@
       border-bottom: none;
     }
 
-    /* Badge mejorado */
     .badge-futbol {
       background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%);
       padding: 0.5rem 1rem;
@@ -176,42 +261,19 @@
       color: white;
     }
 
-    /* Número de fila */
     .row-number {
       font-weight: 700;
       color: #2d8659;
       font-size: 1rem;
     }
 
-    /* Nombre del club */
     .club-name {
       font-weight: 700;
       color: #1a5f3c;
       font-size: 1.1rem;
     }
 
-    /* ========== BOTONES ========== */
-    .btn-back {
-      background: white;
-      border: 2px solid #2d8659;
-      color: #2d8659;
-      padding: 0.6rem 1.5rem;
-      border-radius: 10px;
-      font-weight: 600;
-      transition: all 0.3s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.5rem;
-      text-decoration: none;
-    }
-
-    .btn-back:hover {
-      background: #2d8659;
-      color: white;
-      transform: translateX(-5px);
-    }
-
-    /* ========== FOOTER ========== */
+    /* FOOTER */
     .footer-futbol {
       background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
       color: #ffffff;
@@ -264,7 +326,7 @@
       font-style: italic;
     }
 
-    /* ========== ANIMACIONES ========== */
+    /* ANIMACIONES */
     @keyframes fadeIn {
       from {
         opacity: 0;
@@ -280,7 +342,6 @@
       animation: fadeIn 0.6s ease-out;
     }
 
-    /* Mensaje cuando no hay datos */
     .empty-state {
       text-align: center;
       padding: 4rem 2rem;
@@ -293,7 +354,6 @@
       margin-bottom: 1rem;
     }
 
-    /* ========== RESPONSIVE ========== */
     @media (max-width: 768px) {
       .navbar-brand {
         font-size: 1.2rem;
@@ -320,7 +380,7 @@
 </head>
 <body class="grass-pattern">
 
-  <!-- ========== NAVBAR ========== -->
+  <!-- NAVBAR -->
   <nav class="navbar navbar-expand-lg navbar-dark navbar-futbol">
     <div class="container">
       <a class="navbar-brand fw-bold" href="/">Fútbol Club</a>
@@ -354,18 +414,22 @@
     </div>
   </nav>
 
-  <!-- ========== CONTENIDO PRINCIPAL ========== -->
+  <!-- CONTENIDO PRINCIPAL -->
   <main class="container py-5">
     
-    <!-- Header de página -->
+    <!-- Header -->
     <div class="page-header fade-in">
       <h1 class="page-title">
         <i class="bi bi-shield-fill-check"></i>
         Gestión de Clubes
       </h1>
+      <a href="/clubes/nuevo" class="btn-new">
+        <i class="bi bi-plus-circle-fill"></i>
+        Nuevo Club
+      </a>
     </div>
 
-    <!-- Tabla de clubes -->
+    <!-- Tabla -->
     <div class="table-container fade-in">
       <div class="table-responsive">
         <table class="table table-futbol table-hover align-middle">
@@ -375,6 +439,7 @@
               <th><i class="bi bi-shield"></i> Nombre</th>
               <th><i class="bi bi-geo-alt-fill"></i> Ciudad</th>
               <th><i class="bi bi-calendar-event"></i> Fundación</th>
+              <th><i class="bi bi-gear-fill"></i> Acciones</th>
             </tr>
           </thead>
           <tbody>
@@ -389,10 +454,22 @@
               <td>
                 <span class="badge-futbol" th:text="${c.fundacion}">2000</span>
               </td>
+              <td>
+                <a th:href="@{/clubes/editar/{id}(id=${c.id})}" class="btn-action btn-edit">
+                  <i class="bi bi-pencil-fill"></i> Editar
+                </a>
+                <a th:href="@{/clubes/jugadores/{id}(id=${c.id})}" class="btn-action btn-players">
+                  <i class="bi bi-people-fill"></i> Jugadores
+                </a>
+                <a th:href="@{/clubes/eliminar/{id}(id=${c.id})}" 
+                   class="btn-action btn-delete"
+                   onclick="return confirm('¿Estás seguro de eliminar este club?')">
+                  <i class="bi bi-trash-fill"></i> Eliminar
+                </a>
+              </td>
             </tr>
-            <!-- Mensaje cuando no hay datos -->
             <tr th:if="${#lists.isEmpty(clubes)}">
-              <td colspan="4">
+              <td colspan="5">
                 <div class="empty-state">
                   <i class="bi bi-shield-x"></i>
                   <p class="mb-0">No hay clubes registrados</p>
@@ -414,7 +491,7 @@
 
   </main>
 
-  <!-- ========== FOOTER ========== -->
+  <!-- FOOTER -->
   <footer class="footer-futbol">
     <div class="container">
       <div class="footer-content">
