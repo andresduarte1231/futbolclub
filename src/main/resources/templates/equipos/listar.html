@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Equipos • Fútbol Club</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  
+  <style>
+    /* Estilos generales */
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8edf2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Patrón de césped */
+    .grass-pattern {
+      background-image: 
+        repeating-linear-gradient(
+          90deg,
+          rgba(45, 134, 89, 0.02) 0px,
+          rgba(45, 134, 89, 0.02) 50px,
+          transparent 50px,
+          transparent 100px
+        );
+    }
+
+    /* ========== NAVBAR ========== */
+    .navbar-futbol {
+      background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%) !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      padding: 1rem 0;
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+    }
+
+    .navbar-brand::before {
+      content: "⚽";
+      font-size: 1.8rem;
+      animation: rotate 3s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .nav-link {
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+      border-radius: 5px;
+      margin: 0 0.2rem;
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      background-color: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+
+    .nav-link i {
+      margin-right: 0.3rem;
+      font-size: 1.1rem;
+    }
+
+    /* ========== HEADER DE PÁGINA ========== */
+    .page-header {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem 2rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      margin-bottom: 2rem;
+      border-left: 5px solid #2d8659;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .page-title {
+      color: #1a5f3c;
+      font-weight: 700;
+      margin: 0;
+      font-size: 1.8rem;
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .page-title i {
+      color: #2d8659;
+      font-size: 2rem;
+    }
+
+    /* ========== TABLA MEJORADA ========== */
+    .table-container {
+      background: white;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.08);
+      position: relative;
+    }
+
+    .table-container::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #1a5f3c 0%, #2d8659 100%);
+    }
+
+    .table-futbol {
+      margin-bottom: 0;
+    }
+
+    .table-futbol thead {
+      background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%);
+      color: white;
+    }
+
+    .table-futbol thead th {
+      border: none;
+      padding: 1.2rem 1rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      font-size: 0.85rem;
+      letter-spacing: 0.5px;
+      white-space: nowrap;
+    }
+
+    .table-futbol tbody tr {
+      transition: all 0.2s ease;
+      border-bottom: 1px solid #f0f0f0;
+    }
+
+    .table-futbol tbody tr:hover {
+      background-color: #f8fcf9;
+      transform: scale(1.01);
+      box-shadow: 0 2px 8px rgba(45, 134, 89, 0.1);
+    }
+
+    .table-futbol tbody td {
+      padding: 1.2rem 1rem;
+      vertical-align: middle;
+    }
+
+    .table-futbol tbody tr:last-child {
+      border-bottom: none;
+    }
+
+    /* Badge mejorado para categoría */
+    .badge-categoria {
+      background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%);
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: white;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* Número de fila */
+    .row-number {
+      font-weight: 700;
+      color: #2d8659;
+      font-size: 1rem;
+    }
+
+    /* Nombre del equipo */
+    .team-name {
+      font-weight: 700;
+      color: #1a5f3c;
+      font-size: 1.1rem;
+    }
+
+    /* Nombre del club */
+    .club-name {
+      color: #6c757d;
+      font-weight: 500;
+    }
+
+    /* ========== BOTONES ========== */
+    .btn-back {
+      background: white;
+      border: 2px solid #2d8659;
+      color: #2d8659;
+      padding: 0.6rem 1.5rem;
+      border-radius: 10px;
+      font-weight: 600;
+      transition: all 0.3s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      text-decoration: none;
+    }
+
+    .btn-back:hover {
+      background: #2d8659;
+      color: white;
+      transform: translateX(-5px);
+    }
+
+    /* ========== FOOTER ========== */
+    .footer-futbol {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      color: #ffffff;
+      padding: 2.5rem 0;
+      margin-top: auto;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+    }
+
+    .footer-futbol .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-icons {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .footer-icons i {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      color: #b0b0b0;
+    }
+
+    .footer-icons i:hover {
+      color: #2d8659;
+      transform: scale(1.2) translateY(-3px);
+    }
+
+    .footer-text {
+      color: #b0b0b0;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .footer-divider {
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #2d8659, transparent);
+      margin: 0.5rem 0;
+    }
+
+    .footer-slogan {
+      color: #808080;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    /* ========== ANIMACIONES ========== */
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in {
+      animation: fadeIn 0.6s ease-out;
+    }
+
+    /* Mensaje cuando no hay datos */
+    .empty-state {
+      text-align: center;
+      padding: 4rem 2rem;
+      color: #6c757d;
+    }
+
+    .empty-state i {
+      font-size: 4rem;
+      color: #dee2e6;
+      margin-bottom: 1rem;
+    }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .navbar-brand {
+        font-size: 1.2rem;
+      }
+      .navbar-brand::before {
+        font-size: 1.5rem;
+      }
+      .page-title {
+        font-size: 1.4rem;
+      }
+      .page-title i {
+        font-size: 1.6rem;
+      }
+      .table-futbol thead th {
+        font-size: 0.75rem;
+        padding: 1rem 0.5rem;
+      }
+      .table-futbol tbody td {
+        padding: 1rem 0.5rem;
+        font-size: 0.9rem;
+      }
+    }
+  </style>
+</head>
+<body class="grass-pattern">
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-futbol">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">Fútbol Club</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/clubes">
+              <i class="bi bi-shield-fill-check"></i> Clubes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/equipos">
+              <i class="bi bi-people-fill"></i> Equipos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/jugadores">
+              <i class="bi bi-person-badge-fill"></i> Jugadores
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/partidos">
+              <i class="bi bi-trophy-fill"></i> Partidos
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== CONTENIDO PRINCIPAL ========== -->
+  <main class="container py-5">
+    
+    <!-- Header de página -->
+    <div class="page-header fade-in">
+      <h1 class="page-title">
+        <i class="bi bi-people-fill"></i>
+        Gestión de Equipos
+      </h1>
+    </div>
+
+    <!-- Tabla de equipos -->
+    <div class="table-container fade-in">
+      <div class="table-responsive">
+        <table class="table table-futbol table-hover align-middle">
+          <thead>
+            <tr>
+              <th><i class="bi bi-hash"></i> #</th>
+              <th><i class="bi bi-shield-shaded"></i> Equipo</th>
+              <th><i class="bi bi-bookmark-star-fill"></i> Categoría</th>
+              <th><i class="bi bi-building"></i> Club</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="e, i: ${equipos}">
+              <td>
+                <span class="row-number" th:text="${i.index + 1}">1</span>
+              </td>
+              <td>
+                <span class="team-name" th:text="${e.nombre}">Nombre</span>
+              </td>
+              <td>
+                <span class="badge-categoria" th:text="${e.categoria}">Categoría</span>
+              </td>
+              <td>
+                <span class="club-name" th:text="${e.club != null ? e.club.nombre : '—'}">Club</span>
+              </td>
+            </tr>
+            <!-- Mensaje cuando no hay datos -->
+            <tr th:if="${#lists.isEmpty(equipos)}">
+              <td colspan="4">
+                <div class="empty-state">
+                  <i class="bi bi-people-fill"></i>
+                  <p class="mb-0">No hay equipos registrados</p>
+                </div>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Botón volver -->
+    <div class="mt-4">
+      <a href="/" class="btn-back">
+        <i class="bi bi-arrow-left-circle-fill"></i>
+        Volver al inicio
+      </a>
+    </div>
+
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer-futbol">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-icons">
+          <i class="bi bi-facebook" title="Facebook"></i>
+          <i class="bi bi-twitter-x" title="Twitter"></i>
+          <i class="bi bi-instagram" title="Instagram"></i>
+          <i class="bi bi-youtube" title="YouTube"></i>
+        </div>
+        <div class="footer-divider"></div>
+        <p class="footer-text">
+          © <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2025</span> Fútbol Club — Sistema de Gestión Deportiva
+        </p>
+        <p class="footer-slogan">
+          Desarrollado con pasión por el fútbol ⚽
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

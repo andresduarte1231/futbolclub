@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Inicio • Fútbol Club</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
+  <link rel="stylesheet" th:href="@{/css/app.css}">
+  
+  <style>
+    /* Estilos generales */
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #e8edf2 100%);
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Patrón de césped */
+    .grass-pattern {
+      background-image: 
+        repeating-linear-gradient(
+          90deg,
+          rgba(45, 134, 89, 0.02) 0px,
+          rgba(45, 134, 89, 0.02) 50px,
+          transparent 50px,
+          transparent 100px
+        );
+    }
+
+    /* ========== NAVBAR ========== */
+    .navbar-futbol {
+      background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%) !important;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+      padding: 1rem 0;
+    }
+
+    .navbar-brand {
+      font-size: 1.5rem;
+      letter-spacing: 1px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      transition: all 0.3s ease;
+    }
+
+    .navbar-brand:hover {
+      transform: scale(1.05);
+    }
+
+    .navbar-brand::before {
+      content: "⚽";
+      font-size: 1.8rem;
+      animation: rotate 3s linear infinite;
+    }
+
+    @keyframes rotate {
+      from { transform: rotate(0deg); }
+      to { transform: rotate(360deg); }
+    }
+
+    .nav-link {
+      transition: all 0.3s ease;
+      padding: 0.5rem 1rem !important;
+      border-radius: 5px;
+      margin: 0 0.2rem;
+      font-weight: 500;
+    }
+
+    .nav-link:hover {
+      background-color: rgba(255,255,255,0.15);
+      transform: translateY(-2px);
+    }
+
+    .nav-link i {
+      margin-right: 0.3rem;
+      font-size: 1.1rem;
+    }
+
+    /* ========== HERO SECTION ========== */
+    .hero-section {
+      background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%);
+      color: white;
+      border-radius: 20px;
+      padding: 3rem 2rem;
+      box-shadow: 0 10px 40px rgba(26, 95, 60, 0.3);
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 3rem;
+    }
+
+    .hero-section::before {
+      content: "⚽";
+      position: absolute;
+      font-size: 15rem;
+      opacity: 0.1;
+      right: -3rem;
+      top: -3rem;
+      animation: float 6s ease-in-out infinite;
+    }
+
+    @keyframes float {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(180deg); }
+    }
+
+    .hero-title {
+      font-size: 3rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-subtitle {
+      font-size: 1.3rem;
+      opacity: 0.95;
+      font-weight: 300;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* ========== TARJETAS DE MÓDULOS ========== */
+    .module-card {
+      border: none;
+      border-radius: 15px;
+      transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      background: white;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      position: relative;
+      height: 100%;
+    }
+
+    .module-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 5px;
+      background: linear-gradient(90deg, #1a5f3c 0%, #2d8659 100%);
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .module-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .module-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 40px rgba(45, 134, 89, 0.2);
+    }
+
+    .module-card .card-body {
+      padding: 2rem 1.5rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .module-icon {
+      font-size: 3.5rem;
+      background: linear-gradient(135deg, #1a5f3c 0%, #2d8659 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+
+    .module-card:hover .module-icon {
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .module-content {
+      flex-grow: 1;
+    }
+
+    .module-title {
+      font-weight: 700;
+      font-size: 1.3rem;
+      color: #1a5f3c;
+      margin-bottom: 0.3rem;
+    }
+
+    .module-description {
+      color: #6c757d;
+      font-size: 0.9rem;
+      margin-bottom: 0;
+    }
+
+    /* ========== SECCIÓN DE ESTADÍSTICAS ========== */
+    .stats-section {
+      background: white;
+      border-radius: 15px;
+      padding: 2rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    }
+
+    .stat-item {
+      text-align: center;
+    }
+
+    .stat-icon {
+      font-size: 2.5rem;
+      color: #1a5f3c;
+      margin-bottom: 0.5rem;
+    }
+
+    .stat-label {
+      font-weight: 600;
+      color: #2d8659;
+      margin-top: 0.5rem;
+    }
+
+    /* ========== FOOTER ========== */
+    .footer-futbol {
+      background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+      color: #ffffff;
+      padding: 2.5rem 0;
+      margin-top: auto;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.1);
+    }
+
+    .footer-futbol .footer-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .footer-icons {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 1.5rem;
+    }
+
+    .footer-icons i {
+      transition: all 0.3s ease;
+      cursor: pointer;
+      color: #b0b0b0;
+    }
+
+    .footer-icons i:hover {
+      color: #2d8659;
+      transform: scale(1.2) translateY(-3px);
+    }
+
+    .footer-text {
+      color: #b0b0b0;
+      font-size: 0.9rem;
+      margin: 0;
+    }
+
+    .footer-divider {
+      width: 100px;
+      height: 3px;
+      background: linear-gradient(90deg, transparent, #2d8659, transparent);
+      margin: 0.5rem 0;
+    }
+
+    .footer-slogan {
+      color: #808080;
+      font-size: 0.75rem;
+      margin-top: 0.5rem;
+      font-style: italic;
+    }
+
+    /* ========== ANIMACIONES ========== */
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(30px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .fade-in-up {
+      animation: fadeInUp 0.6s ease-out forwards;
+    }
+
+    .delay-1 { animation-delay: 0.1s; opacity: 0; }
+    .delay-2 { animation-delay: 0.2s; opacity: 0; }
+    .delay-3 { animation-delay: 0.3s; opacity: 0; }
+    .delay-4 { animation-delay: 0.4s; opacity: 0; }
+
+    /* ========== RESPONSIVE ========== */
+    @media (max-width: 768px) {
+      .navbar-brand {
+        font-size: 1.2rem;
+      }
+      .navbar-brand::before {
+        font-size: 1.5rem;
+      }
+      .hero-title {
+        font-size: 2rem;
+      }
+      .hero-subtitle {
+        font-size: 1rem;
+      }
+      .hero-section::before {
+        font-size: 8rem;
+        right: -2rem;
+        top: -2rem;
+      }
+      .module-icon {
+        font-size: 2.5rem;
+      }
+    }
+  </style>
+</head>
+<body class="grass-pattern">
+
+  <!-- ========== NAVBAR ========== -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-futbol">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">Fútbol Club</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#nav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div id="nav" class="collapse navbar-collapse">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/clubes">
+              <i class="bi bi-shield-fill-check"></i> Clubes
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/equipos">
+              <i class="bi bi-people-fill"></i> Equipos
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/jugadores">
+              <i class="bi bi-person-badge-fill"></i> Jugadores
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/partidos">
+              <i class="bi bi-trophy-fill"></i> Partidos
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ========== CONTENIDO PRINCIPAL ========== -->
+  <main class="container py-5">
+    
+    <!-- Hero Section -->
+    <div class="hero-section fade-in-up">
+      <h1 class="hero-title">⚽ Fútbol Club</h1>
+      <p class="hero-subtitle">Sistema integral de gestión deportiva para clubes, equipos, jugadores y partidos</p>
+    </div>
+
+    <!-- Módulos de navegación -->
+    <div class="row g-4">
+      <div class="col-md-6 col-lg-3">
+        <a href="/clubes" class="text-decoration-none fade-in-up delay-1">
+          <div class="card module-card">
+            <div class="card-body">
+              <i class="bi bi-shield-fill-check module-icon"></i>
+              <div class="module-content">
+                <div class="module-title">Clubes</div>
+                <small class="module-description">Gestiona organizaciones deportivas</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <a href="/equipos" class="text-decoration-none fade-in-up delay-2">
+          <div class="card module-card">
+            <div class="card-body">
+              <i class="bi bi-people-fill module-icon"></i>
+              <div class="module-content">
+                <div class="module-title">Equipos</div>
+                <small class="module-description">Administra plantillas deportivas</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <a href="/jugadores" class="text-decoration-none fade-in-up delay-3">
+          <div class="card module-card">
+            <div class="card-body">
+              <i class="bi bi-person-badge-fill module-icon"></i>
+              <div class="module-content">
+                <div class="module-title">Jugadores</div>
+                <small class="module-description">Registros y estadísticas</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+      
+      <div class="col-md-6 col-lg-3">
+        <a href="/partidos" class="text-decoration-none fade-in-up delay-4">
+          <div class="card module-card">
+            <div class="card-body">
+              <i class="bi bi-trophy-fill module-icon"></i>
+              <div class="module-content">
+                <div class="module-title">Partidos</div>
+                <small class="module-description">Fixture y resultados</small>
+              </div>
+            </div>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    <!-- Sección de estadísticas -->
+    <div class="row mt-5 fade-in-up delay-4">
+      <div class="col-12">
+        <div class="stats-section">
+          <div class="row">
+            <div class="col-6 col-md-3 mb-3 mb-md-0 stat-item">
+              <div class="stat-icon">
+                <i class="bi bi-shield-check"></i>
+              </div>
+              <div class="stat-label">Clubes</div>
+              <small class="text-muted">Organizaciones registradas</small>
+            </div>
+            <div class="col-6 col-md-3 mb-3 mb-md-0 stat-item">
+              <div class="stat-icon">
+                <i class="bi bi-people"></i>
+              </div>
+              <div class="stat-label">Equipos</div>
+              <small class="text-muted">Plantillas activas</small>
+            </div>
+            <div class="col-6 col-md-3 stat-item">
+              <div class="stat-icon">
+                <i class="bi bi-person-badge"></i>
+              </div>
+              <div class="stat-label">Jugadores</div>
+              <small class="text-muted">Atletas en sistema</small>
+            </div>
+            <div class="col-6 col-md-3 stat-item">
+              <div class="stat-icon">
+                <i class="bi bi-calendar-event"></i>
+              </div>
+              <div class="stat-label">Partidos</div>
+              <small class="text-muted">Encuentros programados</small>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </main>
+
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer-futbol">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-icons">
+          <i class="bi bi-facebook" title="Facebook"></i>
+          <i class="bi bi-twitter-x" title="Twitter"></i>
+          <i class="bi bi-instagram" title="Instagram"></i>
+          <i class="bi bi-youtube" title="YouTube"></i>
+        </div>
+        <div class="footer-divider"></div>
+        <p class="footer-text">
+          © <span th:text="${#dates.format(#dates.createNow(), 'yyyy')}">2025</span> Fútbol Club — Sistema de Gestión Deportiva
+        </p>
+        <p class="footer-slogan">
+          Desarrollado con pasión por el fútbol ⚽
+        </p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
